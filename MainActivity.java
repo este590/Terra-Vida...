@@ -1,0 +1,3 @@
+package com.terravida.app;
+import android.app.Activity; import android.os.Bundle; import android.webkit.WebView; import android.webkit.WebSettings; import android.webkit.WebViewClient; import android.graphics.Color;
+public class MainActivity extends Activity { @Override public void onCreate(Bundle s){super.onCreate(s);getWindow().setStatusBarColor(Color.rgb(16,26,56));getWindow().setNavigationBarColor(Color.rgb(16,26,56));WebView w=new WebView(this);w.setBackgroundColor(Color.rgb(244,246,251));WebSettings x=w.getSettings();x.setJavaScriptEnabled(true);x.setDomStorageEnabled(true);w.setWebViewClient(new WebViewClient());setContentView(w);w.loadUrl("file:///android_asset/index.html");} }
