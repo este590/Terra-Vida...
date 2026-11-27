@@ -12,6 +12,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Descargar repositorio
         uses: actions/checkout@v4
@@ -27,32 +28,24 @@ jobs:
         with:
           gradle-version: '8.9'
 
-      - name: Extraer proyecto
-        run: |
-          mkdir -p /tmp/terravida
-          unzip -q TerraVida_GitHub.zip.zip -d /tmp/terravida
-
       - name: Encontrar proyecto Android
         run: |
-          SETTINGS=$(find /tmp/terravida -name settings.gradle -type f | head -n 1)
+          SETTINGS=$(find "$GITHUB_WORKSPACE" -name settings.gradle -type f -not -path '*/.gradle/*' | head -n 1)
           if [ -z "$SETTINGS" ]; then
             echo "No se encontró settings.gradle"
             exit 1
           fi
           PROJECT_DIR=$(dirname "$SETTINGS")
-          if [ ! -f "$PROJECT_DIR/app/build.gradle" ]; then
-            echo "No se encontró app/build.gradle"
-            find /tmp/terravida -maxdepth 5 -type f
-            exit 1
-          fi
           echo "PROJECT_DIR=$PROJECT_DIR" >> "$GITHUB_ENV"
+          echo "Proyecto encontrado: $PROJECT_DIR"
 
       - name: Generar APK
-        run: gradle -p "$PROJECT_DIR" assembleDebug
+        run: |
+          gradle -p "$PROJECT_DIR" :app:assembleDebug
 
-      - name: Guardar APK
+      - name: Descargar APK
         uses: actions/upload-artifact@v4
         with:
           name: Terra-Vida-APK
-          path: /tmp/terravida/**/app/build/outputs/apk/debug/app-debug.apk
+          path: ${{ env.PROJECT_DIR }}/app/build/outputs/apk/debug/app-debug.apk
           
