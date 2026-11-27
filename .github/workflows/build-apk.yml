@@ -1,3 +1,4 @@
+
 name: Generar APK Terra Vida
 
 on:
@@ -28,17 +29,30 @@ jobs:
 
       - name: Extraer proyecto
         run: |
-          unzip -q TerraVida_GitHub.zip.zip -d /tmp/terravida-src
-          ls -la /tmp/terravida-src
-          
-      - name: Generar APK
-        run: |
-          cd /tmp/terravida-src/TerraVida
-          gradle assembleDebug
+          mkdir -p /tmp/terravida
+          unzip -q TerraVida_GitHub.zip.zip -d /tmp/terravida
 
-      - name: Descargar APK
+      - name: Encontrar proyecto Android
+        run: |
+          SETTINGS=$(find /tmp/terravida -name settings.gradle -type f | head -n 1)
+          if [ -z "$SETTINGS" ]; then
+            echo "No se encontró settings.gradle"
+            exit 1
+          fi
+          PROJECT_DIR=$(dirname "$SETTINGS")
+          if [ ! -f "$PROJECT_DIR/app/build.gradle" ]; then
+            echo "No se encontró app/build.gradle"
+            find /tmp/terravida -maxdepth 5 -type f
+            exit 1
+          fi
+          echo "PROJECT_DIR=$PROJECT_DIR" >> "$GITHUB_ENV"
+
+      - name: Generar APK
+        run: gradle -p "$PROJECT_DIR" assembleDebug
+
+      - name: Guardar APK
         uses: actions/upload-artifact@v4
         with:
           name: Terra-Vida-APK
-          path: /tmp/terravida-src/TerraVida/app/build/outputs/apk/debug/app-debug.apk
+          path: /tmp/terravida/**/app/build/outputs/apk/debug/app-debug.apk
           
