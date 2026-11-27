@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terra Vida</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f1f5fa;color:#17243b}
+header{background:linear-gradient(135deg,#101a38,#176b86);color:white;padding:28px 20px 35px;border-radius:0 0 28px 28px}
+header h1{font-size:30px;margin:8px 0}
+header p{line-height:1.5;color:#d9edf4}
+.tag{color:#f4c76a;font-weight:bold;letter-spacing:2px}
+main{padding:18px;max-width:650px;margin:auto}
+.card{background:white;padding:19px;margin:14px 0;border-radius:18px;box-shadow:0 5px 18px #17243b12}
+h2{font-size:19px;margin-top:0;color:#176b86}
+button{border:0;border-radius:12px;background:#176b86;color:white;padding:12px 16px;font-weight:bold;margin:5px 3px;cursor:pointer}
+.secondary{background:#e7f0f5;color:#176b86}
+.stat{font-size:28px;font-weight:bold;color:#176b86}
+.item{padding:12px;background:#f1f5fa;border-radius:12px;margin:8px 0}
+footer{text-align:center;padding:25px;color:#617087;font-size:13px}
+</style>
+</head>
+<body>
+<header>
+<div class="tag">CUIDEMOS NUESTRO FUTURO</div>
+<h1>🌎 Terra Vida</h1>
+<p>Dos manos, un planeta: cuidarlo está en nuestras manos.</p>
+</header>
+<main>
+<section class="card">
+<h2>¡Bienvenido a Terra Vida!</h2>
+<p>Aprende, participa y descubre cómo tus pequeñas acciones pueden ayudar a nuestro planeta.</p>
+<div class="stat" id="points">0</div>
+<p>Puntos ecológicos</p>
+</section>
+<section class="card">
+<h2>♻️ Aprende a separar residuos</h2>
+<div class="item"><b>🟦 Papel y cartón</b><br>Hojas, periódicos y cajas limpias.</div>
+<div class="item"><b>🟨 Plásticos y metales</b><br>Botellas y latas limpias.</div>
+<div class="item"><b>🟩 Vidrio</b><br>Frascos y botellas de vidrio.</div>
+<div class="item"><b>⬛ Residuos no reciclables</b><br>Desechos que no pueden recuperarse fácilmente.</div>
+</section>
+<section class="card">
+<h2>🎯 Misiones ecológicas</h2>
+<p>Completa estas acciones para ganar puntos.</p>
+<div class="item">Recoger basura de un espacio público</div>
+<button onclick="mission(10)">Completar +10</button>
+<div class="item">Separar correctamente los residuos</div>
+<button onclick="mission(10)">Completar +10</button>
+<div class="item">Reutilizar un objeto en casa</div>
+<button onclick="mission(15)">Completar +15</button>
+</section>
+<section class="card">
+<h2>🎮 Reto ecológico</h2>
+<p>¿Qué debes hacer con una botella de plástico vacía y limpia?</p>
+<button class="secondary" onclick="answer(false)">Tirarla al suelo</button>
+<button onclick="answer(true)">Separarla para reciclarla</button>
+<p id="result"></p>
+</section>
+<section class="card">
+<h2>🌱 Consejos para cuidar el planeta</h2>
+<ul>
+<li>Ahorra agua y electricidad.</li>
+<li>Evita los plásticos de un solo uso.</li>
+<li>Reutiliza materiales cuando sea posible.</li>
+<li>Planta y cuida árboles.</li>
+<li>Separa tus residuos.</li>
+</ul>
+</section>
+</main>
+<footer>Terra Vida · Cada acción cuenta por nuestro planeta 🌎</footer>
+<script>
+let score=Number(localStorage.getItem("terraPoints")||0);
+function update(){document.getElementById("points").textContent=score}
+function mission(n){score+=n;localStorage.setItem("terraPoints",score);update();alert("¡Misión completada! Ganaste "+n+" puntos.")}
+function answer(ok){let r=document.getElementById("result");if(ok){r.textContent="¡Correcto! +5 puntos";score+=5;localStorage.setItem("terraPoints",score);update()}else{r.textContent="Inténtalo otra vez. ¡Tú puedes!"}}
+update();
+</script>
+</body>
+</html>
