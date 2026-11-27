@@ -9,7 +9,7 @@
         android:theme="@android:style/Theme.Material.Light.NoActionBar">
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.terravida.app.MainActivity"
             android:exported="true">
 
             <intent-filter>
